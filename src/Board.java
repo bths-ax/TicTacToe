@@ -1,5 +1,6 @@
 public class Board
 {
+	private int boardSz;
 	private Space[] spaces;
 	private WinCondition[] winningConfigs;
 
@@ -9,9 +10,10 @@ public class Board
 	 */
 	public Board(int boardSz)
 	{
-		spaces = new Space[boardSz];
+		this.boardSz = boardSz;
+		this.spaces = new Space[boardSz * boardSz];
 		for (int i = 0; i < spaces.length; i++)
-			spaces[i] = new Space();
+			this.spaces[i] = new Space();
 
 		// TODO: Fix for var sz board
 		winningConfigs = new WinCondition[8];
@@ -61,32 +63,26 @@ public class Board
 	 */
 	public void drawBoard()
 	{
-		// TODO: Fix for var sz board
 		System.out.println();
 
-		for (int i = 0; i < 9; i++)
+		int spacePadding = (int)Math.log10(boardSz * boardSz) + 1;
+
+		for (int i = 0; i < spaces.length; i++)
 		{
 			Space space = spaces[i];
 
-			if (space.getSymbol() == Space.BLANK)
-			{
-				// number them 1 thru 9
-				System.out.print(i + 1);
-			}
-			else
-			{
-				System.out.print(space.getSymbol());
-			}
+			// Horizontal dividers
+			if (i % boardSz == 0)
+				System.out.println("\n" + "-".repeat(spacePadding * boardSz + (boardSz - 1)));
 
-			// print a horizontal divider after each set of 3
-			if((i + 1) % 3 == 0)
-			{
-				System.out.println("\n-----");
-			}
-			// print a vertical divider between each space
+			// Vertical dividers
 			else
-			{
 				System.out.print("|");
+
+			if (space.getSymbol() == Space.BLANK) {
+				System.out.print(String.format("%"+spacePadding+"d", i + 1));
+			} else {
+				System.out.print(String.format("%"+spacePadding+"s", space.getSymbol()));
 			}
 		}
 

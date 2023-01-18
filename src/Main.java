@@ -6,15 +6,15 @@ public class Main
 	{
 		Scanner scanner = new Scanner(System.in);
 
-		int playerCnt;
+		int playerCnt = -1;
 		while (!(2 <= playerCnt && playerCnt <= 4)) {
-			System.out.println("Number of players (2-4): ");
+			System.out.print("Number of players (2-4): ");
 			playerCnt = scanner.nextInt();
 		}
 
-		int boardSz;
+		int boardSz = -1;
 		while (!(3 <= boardSz && boardSz <= 6)) {
-			System.out.println("Board size (3-6): ");
+			System.out.print("Board size (3-6): ");
 			boardSz = scanner.nextInt();
 		}
 
