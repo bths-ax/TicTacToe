@@ -17,7 +17,7 @@ public class TicTacToe
 		players = new Player[playerCnt];
 		for (int i = 0; i < playerCnt; i++)
 			players[i] = new Player(Player.SYMBOL_LIST[i]);
-		board = new Board(boardSz); // TODO
+		board = new Board(boardSz);
 
 		// draws the board as part of setup
 		board.drawBoard();
