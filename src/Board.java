@@ -4,17 +4,16 @@ public class Board
 	private WinCondition[] winningConfigs;
 
 	/**
-	 * Constructs 9 new Space objects and adds them to the spaces array.
-	 * Also sets up the 8 winning conditions for tic-tac-toe.
+	 * Creates a tic tac toe game board with a variable size
+	 * @param boardSz Size of the board as NxN
 	 */
-	public Board()
+	public Board(int boardSz)
 	{
-		spaces = new Space[9];
+		spaces = new Space[boardSz];
 		for (int i = 0; i < spaces.length; i++)
-		{
 			spaces[i] = new Space();
-		}
 
+		// TODO: Fix for var sz board
 		winningConfigs = new WinCondition[8];
 		winningConfigs[0] = new WinCondition(0, 1, 2);
 		winningConfigs[1] = new WinCondition(3, 4, 5);
@@ -62,6 +61,7 @@ public class Board
 	 */
 	public void drawBoard()
 	{
+		// TODO: Fix for var sz board
 		System.out.println();
 
 		for (int i = 0; i < 9; i++)
@@ -108,11 +108,11 @@ public class Board
 	 */
 	public boolean recordMove(int spaceIdx, Player player)
 	{
-		// since spaces are numbered 1-9, subtract 1 to correlate to 0-8 index range
+		// since spaces are numbered [1, N], subtract 1 to correlate to [0, N) index range
 		int adjustedSpace = spaceIdx - 1;
 
-		// if user chooses a space between 1 and 9, try to occupy it, which updates
-		// the symbol and returns true if the space is currently a numbered "blank" space
+		// if user chooses a valid space, try to occupy it, which updates the symbol
+		// and returns true if the operation was successful
 		if (adjustedSpace >= 0 && adjustedSpace < spaces.length)
 		{
 			boolean spaceOccupied = spaces[adjustedSpace].occupySpace(player.getSymbol());
@@ -184,4 +184,3 @@ public class Board
 		return true;	
 	}
 }
-

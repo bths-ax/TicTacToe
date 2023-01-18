@@ -1,7 +1,7 @@
 public class Player
 {
-	// instance variable marked as FINAL
-	// once it's set in the constructor, it stays!
+	public final static String[] SYMBOL_LIST = { "X", "O", "F", "M" };
+
 	private final String symbol;
 
 	public Player (String symbol)

@@ -1,8 +1,9 @@
 public class WinCondition
 {
 	private int[] winningSpaces;
-	private String hey;
+	private String hey; // lol what is this
 
+	// TODO: Fix for var sz board
 	public WinCondition(int space1, int space2, int space3)
 	{
 		winningSpaces = new int[3];

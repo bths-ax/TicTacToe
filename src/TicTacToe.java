@@ -6,17 +6,18 @@ public class TicTacToe
 	private Board board;
 
 	/**
-	 * Creates a player with the symbol X and a player with the symbol O
-	 * and initializes the players instance variable with the two players.
+	 * Creates a tic tac toe game with a variable
+	 * number of players and board size
 	 *
-	 * Creates a new Board and assigns it to board, then draws game boad.
+	 * @param playerCnt Number of players
+	 * @param boardSz Size of the board as NxN
 	 */
-	public TicTacToe()
+	public TicTacToe(int playerCnt, int boardSz)
 	{
-		players = new Player[2];
-		players[0] = new Player("X");
-		players[1] = new Player("O");
-		board = new Board();
+		players = new Player[playerCnt];
+		for (int i = 0; i < playerCnt; i++)
+			players[i] = new Player(Player.SYMBOL_LIST[i]);
+		board = new Board(boardSz); // TODO
 
 		// draws the board as part of setup
 		board.drawBoard();
