@@ -15,16 +15,21 @@ public class Board
 		for (int i = 0; i < spaces.length; i++)
 			this.spaces[i] = new Space();
 
-		// TODO: Fix for var sz board
-		winningConfigs = new WinCondition[8];
-		winningConfigs[0] = new WinCondition(0, 1, 2);
-		winningConfigs[1] = new WinCondition(3, 4, 5);
-		winningConfigs[2] = new WinCondition(6, 7, 8);
-		winningConfigs[3] = new WinCondition(0, 3, 6);
-		winningConfigs[4] = new WinCondition(1, 4, 7);
-		winningConfigs[5] = new WinCondition(2, 5, 8);
-		winningConfigs[6] = new WinCondition(0, 4, 8);
-		winningConfigs[7] = new WinCondition(2, 4, 6);
+		// Generate winning configurations
+		// * 2 will be diagonals
+		// * N will be horizontals
+		// * N will be verticals
+		this.winningConfigs = new WinCondition[2 + 2 * boardSz];
+
+		// Diagonals
+		this.winningConfigs[0] = WinCondition.generateWinningLine(boardSz, 0, 0, 1, 1);
+		this.winningConfigs[1] = WinCondition.generateWinningLine(boardSz, 0, boardSz - 1, 1, -1);
+
+		// Horizontals and verticals
+		for (int i = 0; i < boardSz; i++) {
+			this.winningConfigs[2 + i] = WinCondition.generateWinningLine(boardSz, i, 0, 0, 1);
+			this.winningConfigs[2 + boardSz + i] = WinCondition.generateWinningLine(boardSz, 0, i, 1, 0);
+		}
 	}
 
 	// getter method; note that there is
@@ -156,11 +161,15 @@ public class Board
 	public boolean checkConfiguration(WinCondition comboToCheck)
 	{
 		int[] winningSpaces = comboToCheck.getWinningSpaces();
-		int s1 = winningSpaces[0];
-		int s2 = winningSpaces[1];
-		int s3 = winningSpaces[2];
+		int sampleWinningSpace = winningSpaces[0];
 
-		return spaces[s1].getSymbol() == spaces[s2].getSymbol() && spaces[s1].getSymbol() == spaces[s3].getSymbol();
+		for (int winningSpace : winningSpaces) {
+			if (spaces[winningSpace] != spaces[sampleWinningSpace]) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
