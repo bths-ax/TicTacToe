@@ -1,19 +1,12 @@
 public class WinCondition
 {
 	private int[] winningSpaces;
-	private String hey; // lol what is this
 
-	// TODO: Fix for var sz board
-	public WinCondition(int space1, int space2, int space3)
-	{
-		winningSpaces = new int[3];
-		winningSpaces[0] = space1;
-		winningSpaces[1] = space2;
-		winningSpaces[2] = space3;
+	public WinCondition(int[] winningSpaces) {
+		this.winningSpaces = winningSpaces;
 	}
 
-	public int[] getWinningSpaces()
-	{
+	public int[] getWinningSpaces() {
 		return winningSpaces;
 	}
 }
