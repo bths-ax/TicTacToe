@@ -161,10 +161,11 @@ public class Board
 	public boolean checkConfiguration(WinCondition comboToCheck)
 	{
 		int[] winningSpaces = comboToCheck.getWinningSpaces();
-		int sampleWinningSpace = winningSpaces[0];
 
-		for (int winningSpace : winningSpaces) {
-			if (spaces[winningSpace] != spaces[sampleWinningSpace]) {
+		for (int i = 1; i < winningSpaces.length; i++) {
+			Space s1 = spaces[winningSpaces[i]];
+			Space s2 = spaces[winningSpaces[i - 1]];
+			if (!s1.getSymbol().equals(s2.getSymbol())) {
 				return false;
 			}
 		}

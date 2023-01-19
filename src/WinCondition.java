@@ -33,9 +33,7 @@ public class WinCondition
 		{
 			int boardIdx = row * boardSz + col;
 			winningSpaces[idx++] = boardIdx;
-			System.out.print(boardIdx + " ");
 		}
-		System.out.println();
 
 		return new WinCondition(winningSpaces);
 	}
