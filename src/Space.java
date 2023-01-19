@@ -19,19 +19,14 @@ public class Space
 	}
 
 	/**
-	 * Changes the symbol on the space to symbolOfOccupant and returns true,
-	 * but ONLY if it is currently BLANK.
+	 * Changes the symbol on the space to symbolOfOccupant and returns true
 	 *
 	 * @param symbolOfOccupant  the new symbol for the space.
 	 * @return  true if the space was successfully changed, return false otherwise
 	 */
 	public boolean occupySpace(String symbolOfOccupant)
 	{
-		if (symbol == BLANK)
-		{
-			symbol = symbolOfOccupant;
-			return true;
-		}
-		return false;
+		symbol = symbolOfOccupant;
+		return true; // now i could remove this but im a bit too lazy
 	}
 }
