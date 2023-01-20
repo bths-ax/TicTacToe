@@ -38,6 +38,26 @@ public class WinCondition
 		return new WinCondition(winningSpaces);
 	}
 
+	/**
+	  * Generates a WinCondition in the shape of square with
+	  * a variable position and side length
+	  *
+	  * @param boardSz Size of the board
+	  * @param row Row of the top left corner of the square
+	  * @param col Column of the top left corner of the square
+	  * @param size Side length of the square
+	  */
+	public static WinCondition generateWinningSquare(int boardSz, int row, int col, int size) {
+		int[] winningSpaces = new int[size * size];
+		for (int rowOffset = 0; rowOffset < size; rowOffset++) {
+			for (int colOffset = 0; colOffset < size; colOffset++) {
+				int boardIdx = (row + rowOffset) * boardSz + (col + colOffset);
+				winningSpaces[rowOffset * size + colOffset] = boardIdx;
+			}
+		}
+		return new WinCondition(winningSpaces);
+	}
+
 	public WinCondition(int[] winningSpaces) {
 		this.winningSpaces = winningSpaces;
 	}

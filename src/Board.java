@@ -19,7 +19,8 @@ public class Board
 		// * 2 will be diagonals
 		// * N will be horizontals
 		// * N will be verticals
-		this.winningConfigs = new WinCondition[2 + 2 * boardSz];
+		// * (N - 1)^2 will be squares
+		this.winningConfigs = new WinCondition[2 + 2 * boardSz + (boardSz - 1)*(boardSz - 1)];
 
 		// Diagonals
 		this.winningConfigs[0] = WinCondition.generateWinningLine(boardSz, 0, 0, 1, 1);
@@ -29,6 +30,14 @@ public class Board
 		for (int i = 0; i < boardSz; i++) {
 			this.winningConfigs[2 + i] = WinCondition.generateWinningLine(boardSz, i, 0, 0, 1);
 			this.winningConfigs[2 + boardSz + i] = WinCondition.generateWinningLine(boardSz, 0, i, 1, 0);
+		}
+
+		// Squares
+		for (int i = 0; i < boardSz - 1; i++) {
+			for (int j = 0; j < boardSz - 1; j++) {
+				this.winningConfigs[2 + 2 * boardSz + i * (boardSz - 1) + j] =
+					WinCondition.generateWinningSquare(boardSz, i, j, 2);
+			}
 		}
 	}
 
@@ -146,7 +155,12 @@ public class Board
 
 				String winningSymbol = spaces[spaceWithWinningSymbol].getSymbol();
 
-				return winningSymbol;
+				// Don't return if no one is supposed to be the winner,
+				// save that for only when there are no fulfilled
+				// winning conditions
+				if (winningSymbol != Space.BLANK) {
+					return winningSymbol;
+				}
 			}
 		}
 		return Space.BLANK;	
