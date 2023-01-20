@@ -7,8 +7,8 @@ public class Main
 		Scanner scanner = new Scanner(System.in);
 
 		int playerCnt = -1;
-		while (!(2 <= playerCnt && playerCnt <= 4)) {
-			System.out.print("Number of players (2-4): ");
+		while (!(1 <= playerCnt && playerCnt <= 4)) {
+			System.out.print("Number of players (1-4): ");
 			playerCnt = scanner.nextInt();
 		}
 

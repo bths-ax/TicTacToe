@@ -46,36 +46,20 @@ public class TicTacToe
 					break;  // breaks out of the for-loop -- NOT the while loop
 				}
 			}
+
+			// Special case for singleplayer mode
+			if (players.length == 1) {
+				if (computerTurn()) {
+					gameOver = true;
+					break;
+				}
+			}
 		}
 		System.out.println("Thanks for playing!");
 	}
 
-	/**
-	 * Allows the current player to take a turn.
-	 * Print a message saying whose turn it is: X or O
-	 * Draw the board for player reference.
-	 * Allow the appropriate player to enter the space number they want to occupy and record the move.
-	 * If the player has won the game, print a message and return true.
-	 * If the board is full, print a message and return true.
-	 * Otherwise, the game is not yet over and return false.
-	 *
-	 * @param p  the player taking the turn.
-	 * @return  true if the GAME is over, false if the TURN is over but the game is not over
-	 */	
-	public boolean takeTurn(Player player)
-	{
-		Scanner scanner = new Scanner(System.in);
-		boolean selectedValidSpace = false;
-
-		// repeat until player selects a valid space, which occurs when recordMove returns true;
-		// this occurs when the player has selected a numbered "blank" space.
-		while (!selectedValidSpace)
-		{
-			System.out.print("Player " + player.getSymbol() + "'s turn! Choose a space: ");
-			int chosenSpace = scanner.nextInt();
-			selectedValidSpace = board.recordMove(chosenSpace, player);
-		}
-
+	/** @return true if the GAME is over, false if the TURN is over but the game is not over */
+	private boolean checkWinner() {
 		// redraw the board, which will include the newly placed X or O as updated via recordMove
 		board.drawBoard();
 
@@ -95,5 +79,67 @@ public class TicTacToe
 		}
 
 		return false;
+	}
+
+	/**
+	 * Allows the current player to take a turn.
+	 * Print a message saying whose turn it is: X or O
+	 * Draw the board for player reference.
+	 * Allow the appropriate player to enter the space number they want to occupy and record the move.
+	 * If the player has won the game, print a message and return true.
+	 * If the board is full, print a message and return true.
+	 * Otherwise, the game is not yet over and return false.
+	 *
+	 * @param p  the player taking the turn.
+	 * @return true if the GAME is over, false if the TURN is over but the game is not over
+	 */	
+	public boolean takeTurn(Player player)
+	{
+		Scanner scanner = new Scanner(System.in);
+		boolean selectedValidSpace = false;
+
+		// repeat until player selects a valid space, which occurs when recordMove returns true;
+		// this occurs when the player has selected a numbered "blank" space.
+		while (!selectedValidSpace)
+		{
+			System.out.print("Player " + player.getSymbol() + "'s turn! Choose a space: ");
+			int chosenSpace = scanner.nextInt();
+			selectedValidSpace = board.recordMove(chosenSpace, player);
+		}
+
+		return checkWinner();
+	}
+
+	/**
+	  * Calculates a good position to place an opposing move
+	  * on the current state of the game board
+	  *
+	  * @return true if the game is over
+	  */
+	public boolean computerTurn() {
+		Player fakePlayer = new Player(Player.SYMBOL_LIST[1]);
+		int boardSz = board.getBoardSize();
+		int lookahead = boardSz / 2;
+
+		boolean placed = false;
+
+		for (int spaceIdx = 0; spaceIdx < boardSz * boardSz; spaceIdx++) {
+			if (board.isThreateningSpace(players[0], spaceIdx, lookahead)) {
+				board.recordMove(spaceIdx + 1, fakePlayer);
+				placed = true;
+				break;
+			}
+		}
+
+		// If not being threatened then just place randomly
+		if (!placed) {
+			board.recordMove((int)(Math.random() * boardSz * boardSz + 1), fakePlayer);
+		}
+
+		System.out.println();
+		System.out.println("Computer has chosen its move");
+		System.out.println();
+
+		return checkWinner();
 	}
 }

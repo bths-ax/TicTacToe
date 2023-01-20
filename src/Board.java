@@ -41,6 +41,8 @@ public class Board
 		}
 	}
 
+	public int getBoardSize() { return boardSz; }
+
 	// getter method; note that there is
 	// a parameter, which allows caller to specify
 	// which specific Space (of the 9) to return
@@ -158,7 +160,7 @@ public class Board
 				// Don't return if no one is supposed to be the winner,
 				// save that for only when there are no fulfilled
 				// winning conditions
-				if (winningSymbol != Space.BLANK) {
+				if (!winningSymbol.equals(Space.BLANK)) {
 					return winningSymbol;
 				}
 			}
@@ -202,5 +204,32 @@ public class Board
 			}
 		}
 		return true;	
+	}
+
+	/**
+	  * Simple algorithm that looks ahead a few moves to see if a
+	  * space would be threatening if taken by the opponent (user)
+	  * 
+	  * Because writing a good AI takes way too much time
+	  *
+	  * @param user Player object of the opponent (user)
+	  * @param spaceIdx Index of the space to check
+	  * @param lookahead Amount of turns to look ahead
+	  * @returns int Index of most threatening space (Where to defend)
+	  */
+	public boolean isThreateningSpace(Player user, int spaceIdx, int lookahead) {
+		String oldSymbol = spaces[spaceIdx].getSymbol();
+		spaces[spaceIdx].occupySpace(user.getSymbol());
+
+		boolean threatening = !checkWinner().equals(Space.BLANK);
+
+		if (!threatening && lookahead > 0) {
+			for (int nextSpaceIdx = 0; nextSpaceIdx < spaces.length; nextSpaceIdx++) {
+				threatening |= isThreateningSpace(user, nextSpaceIdx, lookahead - 1);
+			}
+		}
+
+		spaces[spaceIdx].occupySpace(oldSymbol);
+		return threatening;
 	}
 }
