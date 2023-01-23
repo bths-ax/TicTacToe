@@ -15,14 +15,7 @@ public class WinCondition
 	  * @returns WinCondition
 	  */
 	public static WinCondition generateWinningLine(int boardSz, int startRow, int startCol, int offsetRow, int offsetCol) {
-		int winningSpacesCnt = 0;
-		for (
-			int row = startRow, col = startCol;
-			0 <= row && row < boardSz &&
-				0 <= col && col < boardSz;
-			row += offsetRow, col += offsetCol) winningSpacesCnt++;
-
-		int[] winningSpaces = new int[winningSpacesCnt];
+		int[] winningSpaces = new int[boardSz]; // trusting that i dont use this to start at some weird place
 		int idx = 0;
 
 		for (
