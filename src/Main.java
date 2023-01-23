@@ -18,6 +18,13 @@ public class Main
 			boardSz = scanner.nextInt();
 		}
 
+		if (playerCnt == 1) {
+			System.out.println("Because you chose to play with a bot, "
+					+ "extra credit addon #1 (overriding rule) will be disabled.");
+			System.out.println("Why? Because you'll never win if it was on (lol)");
+			System.out.println("Mad? Send regards to wedontcare@gmail.com");
+		}
+
 		TicTacToe ticTacToe = new TicTacToe(playerCnt, boardSz);
 		ticTacToe.runGame();
 	}

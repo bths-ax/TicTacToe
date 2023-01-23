@@ -207,29 +207,33 @@ public class Board
 	}
 
 	/**
-	  * Simple algorithm that looks ahead a few moves to see if a
-	  * space would be threatening if taken by the opponent (user)
-	  * 
-	  * Because writing a good AI takes way too much time
+	  * Calculates the threat value of a specified space
+	  * if some player were to take it
 	  *
-	  * @param user Player object of the opponent (user)
-	  * @param spaceIdx Index of the space to check
-	  * @param lookahead Amount of turns to look ahead
-	  * @returns int Index of most threatening space (Where to defend)
+	  * Threat value calculated by checking how many
+	  * WinConditions it is able to fulfill and how close
+	  * it is to fulfilling it
+	  *
+	  * @param p Player
+	  * @param spaceIdx Space index
+	  * @return int Threat value
 	  */
-	public boolean isThreateningSpace(Player user, int spaceIdx, int lookahead) {
-		String oldSymbol = spaces[spaceIdx].getSymbol();
-		spaces[spaceIdx].occupySpace(user.getSymbol());
-
-		boolean threatening = !checkWinner().equals(Space.BLANK);
-
-		if (!threatening && lookahead > 0) {
-			for (int nextSpaceIdx = 0; nextSpaceIdx < spaces.length; nextSpaceIdx++) {
-				threatening |= isThreateningSpace(user, nextSpaceIdx, lookahead - 1);
+	public int calculateThreatValue(Player p, int spaceIdx) {
+		int threatValue = 0;
+		for (WinCondition cfg : winningConfigs) {
+			if (cfg.hasSpace(spaceIdx)) {
+				int cfgThreatValue = 0;
+				int[] winningSpaces = cfg.getWinningSpaces();
+				for (int winningSpace : winningSpaces)
+					if (spaces[winningSpace].getSymbol().equals(p.getSymbol()))
+						cfgThreatValue++; // funny code triangle (lol)
+				threatValue += (int)Math.pow(cfgThreatValue, 4) / winningSpaces.length;
 			}
 		}
+		return threatValue;
+	}
 
-		spaces[spaceIdx].occupySpace(oldSymbol);
-		return threatening;
+	public boolean spaceTaken(int spaceIdx) {
+		return !spaces[spaceIdx].getSymbol().equals(Space.BLANK);
 	}
 }

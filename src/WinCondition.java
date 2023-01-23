@@ -58,4 +58,11 @@ public class WinCondition
 	public int[] getWinningSpaces() {
 		return winningSpaces;
 	}
+
+	public boolean hasSpace(int spaceIdx) {
+		for (int winningSpace : winningSpaces)
+			if (winningSpace == spaceIdx)
+				return true;
+		return false;
+	}
 }

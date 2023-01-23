@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class TicTacToe
 {
+	public static boolean singleplayer = false;
+
 	private Player[] players;
 	private Board board;
 
@@ -11,9 +13,12 @@ public class TicTacToe
 	 *
 	 * @param playerCnt Number of players
 	 * @param boardSz Size of the board as NxN
+	 * @param singleplayer Singleplayer mode
 	 */
 	public TicTacToe(int playerCnt, int boardSz)
 	{
+		singleplayer = playerCnt == 1;
+
 		players = new Player[playerCnt];
 		for (int i = 0; i < playerCnt; i++)
 			players[i] = new Player(Player.SYMBOL_LIST[i]);
@@ -119,26 +124,46 @@ public class TicTacToe
 	public boolean computerTurn() {
 		Player fakePlayer = new Player(Player.SYMBOL_LIST[1]);
 		int boardSz = board.getBoardSize();
-		int lookahead = boardSz / 2;
 
-		boolean placed = false;
+		int chosenSpaceIdx = -1;
+
+		// Place move at space with highest threat value if threatened
+		int maxThreatSpaceIdx = 0;
+		int maxThreatValue = -1;
 
 		for (int spaceIdx = 0; spaceIdx < boardSz * boardSz; spaceIdx++) {
-			if (board.isThreateningSpace(players[0], spaceIdx, lookahead)) {
-				board.recordMove(spaceIdx + 1, fakePlayer);
-				placed = true;
-				break;
+			int threatValue = board.calculateThreatValue(players[0], spaceIdx);
+			if (threatValue > maxThreatValue && !board.spaceTaken(spaceIdx)) {
+				maxThreatValue = threatValue;
+				maxThreatSpaceIdx = spaceIdx;
 			}
 		}
 
-		// If not being threatened then just place randomly
-		if (!placed) {
-			board.recordMove((int)(Math.random() * boardSz * boardSz + 1), fakePlayer);
+		if (maxThreatValue > Math.min(boardSz / 2, 2)) {
+			chosenSpaceIdx = maxThreatSpaceIdx;
 		}
 
+		// Otherwise place move at space that threatens the opponent (user) the most
+		maxThreatSpaceIdx = 0;
+		maxThreatValue = -1;
+
+		for (int spaceIdx = 0; spaceIdx < boardSz * boardSz; spaceIdx++) {
+			int threatValue = board.calculateThreatValue(fakePlayer, spaceIdx);
+			if (threatValue > maxThreatValue && !board.spaceTaken(spaceIdx)) {
+				maxThreatValue = threatValue;
+				maxThreatSpaceIdx = spaceIdx;
+			}
+		}
+
+		if (chosenSpaceIdx == -1) {
+			chosenSpaceIdx = maxThreatSpaceIdx;
+		}
+
+		// Actually place move
+		board.recordMove(chosenSpaceIdx + 1, fakePlayer);
+
 		System.out.println();
-		System.out.println("Computer has chosen its move");
-		System.out.println();
+		System.out.println("Computer chose its move: " + (chosenSpaceIdx + 1));
 
 		return checkWinner();
 	}

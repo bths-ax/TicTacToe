@@ -26,7 +26,11 @@ public class Space
 	 */
 	public boolean occupySpace(String symbolOfOccupant)
 	{
+		if (TicTacToe.singleplayer && !symbol.equals(BLANK)) {
+			return false;
+		}
+
 		symbol = symbolOfOccupant;
-		return true; // now i could remove this but im a bit too lazy
+		return true;
 	}
 }
